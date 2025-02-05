@@ -25,7 +25,7 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({ currentFile,
             <Loader2 className="h-4 w-4 animate-spin" />
             <span>Analyzing {currentFile}...</span>
           </div>
-        )}
+        )}  
         {analyses.map((analysis, index) => (
           <div key={index} className="space-y-2 border-l-2 border-green-500 pl-4">
             <h4 className="text-sm font-medium text-foreground font-mono">{analysis.file}</h4>

@@ -21,7 +21,9 @@ class GithubService:
             url = parts[-1]
 
         if "/" not in url:
-            raise ValueError("Invalid repository path. Expected format: owner/repository")
+            raise ValueError(
+                "Invalid repository path. Expected format: owner/repository"
+            )
         return url
 
     def get_user(self):
@@ -67,12 +69,14 @@ class GithubService:
                 elif item.type == "file" and not should_skip_file(item.name):
                     try:
                         content = item.decoded_content.decode("utf-8")
-                        contents.append({
-                            "name": item.name,
-                            "path": item.path,
-                            "type": item.type,
-                            "content": content,
-                        })
+                        contents.append(
+                            {
+                                "name": item.name,
+                                "path": item.path,
+                                "type": item.type,
+                                "content": content,
+                            }
+                        )
                     except UnicodeDecodeError:
                         print(f"Skipping binary file: {item.path}")
         except Exception as e:
@@ -84,25 +88,16 @@ class GithubService:
         try:
             # Run checkstyle analysis
             checkstyle_results = self.analyzer.analyze(
-                file_info['content'], 
-                file_info['name']
+                file_info["content"], file_info["name"]
             )
 
             # Get AI review
             review = self.reviewer.review(
-                file_info,
-                checkstyle_results,
-                self.guidelines
+                file_info, checkstyle_results, self.guidelines
             )
 
-            return {
-                'checkstyle': checkstyle_results,
-                'review': review
-            }
+            return {"code": "supposed to contain some code", "feedback": review}
 
         except Exception as e:
             print(f"Analysis failed for {file_info['name']}: {str(e)}")
-            return {
-                'checkstyle': [],
-                'review': f"Analysis failed: {str(e)}"
-            }
+            return {"checkstyle": [], "review": f"Analysis failed: {str(e)}"}

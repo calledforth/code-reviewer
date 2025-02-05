@@ -33,15 +33,7 @@ class CodeReviewer:
 
             print(response.text)
 
-            response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a code reviewer."},
-                    {"role": "user", "content": prompt},
-                ],
-            )
-
-            return response.choices[0].message.content
+            return response.text
 
         except Exception as e:
             return f"AI review failed: {str(e)}"
