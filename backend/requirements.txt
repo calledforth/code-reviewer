@@ -1,0 +1,5 @@
+flask
+PyGithub
+python-dotenv
+flask-cors
+google-generativeai
