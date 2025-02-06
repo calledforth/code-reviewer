@@ -95,8 +95,8 @@ class GithubService:
             review = self.reviewer.review(
                 file_info, checkstyle_results, self.guidelines
             )
-
-            return {"code": "supposed to contain some code", "feedback": review}
+        
+            return {"analysis": review}
 
         except Exception as e:
             print(f"Analysis failed for {file_info['name']}: {str(e)}")

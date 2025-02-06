@@ -75,6 +75,7 @@ def stream_review():
 
                     # Perform analysis
                     analysis = g.get_file_analysis(file_info)
+                    print(analysis)
 
                     # Send analysis results
                     yield f"""data: {json.dumps({

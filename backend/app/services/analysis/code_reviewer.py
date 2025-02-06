@@ -20,6 +20,16 @@ class CodeReviewer:
             generation_config=generation_config,
         )
 
+    def _clean_model_output(self, text):
+        """Remove markdown code blocks from model output"""
+        if text.startswith("```json"):
+            text = text.replace("```json", "", 1)
+        elif text.startswith("```"):
+            text = text.replace("```", "", 1)
+        if text.endswith("```"):
+            text = text[:-3]
+        return text.strip()
+
     def review(self, file_info, checkstyle_results, guidelines):
         """Get AI review for a file"""
         try:
@@ -28,12 +38,12 @@ class CodeReviewer:
             )
 
             chat_session = self.model.start_chat(history=[])
+            print(prompt)
 
-            response = chat_session.send_message("INSERT_INPUT_HERE")
+            response = chat_session.send_message(prompt)
+            cleaned_response = self._clean_model_output(response.text)
 
-            print(response.text)
-
-            return response.text
+            return cleaned_response
 
         except Exception as e:
             return f"AI review failed: {str(e)}"
@@ -52,8 +62,12 @@ class CodeReviewer:
         Guidelines:
         {guidelines.decode('utf-8') if guidelines else 'No specific guidelines provided'}
         
-        Provide a concise code review focusing on:
-        1. Code quality issues found by checkstyle
-        2. Adherence to provided guidelines
-        3. General code improvement suggestions
+        your goal is to highlight the errors or warning provided by checkstyle and provide adherence to additional guidelines provide.
+        for each error or warning, return your output in the following format:
+        A dictionary with following keys:
+            code : code line with error or warning',
+            feedback : correction or feedback for the error or warning, inlcuding line number
+        
+        all these can be enclosed in a list.
+        very strictly adhere to the format provided and don't return anyother additional text.
         """
