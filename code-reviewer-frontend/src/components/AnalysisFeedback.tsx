@@ -12,7 +12,7 @@ interface CodeFeedback {
 
 interface Analysis {
   file: string
-  analysis: string // JSON string
+  analysis: CodeFeedback[] // Changed from string to CodeFeedback[]
 }
 
 interface AnalysisFeedbackProps {
@@ -21,6 +21,23 @@ interface AnalysisFeedbackProps {
 }
 
 export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({ currentFile, analyses }) => {
+  const parseAnalysis = (analysisData: any): CodeFeedback[] => {
+    if (!analysisData) return [];
+    
+    // If it's already an array, return it
+    if (Array.isArray(analysisData)) return analysisData;
+    
+    // If it's an object with 'analysis' property that contains the array
+    if (analysisData.analysis && Array.isArray(analysisData.analysis)) {
+      return analysisData.analysis;
+    }
+
+    console.log('Unexpected analysis format:', analysisData);
+    return [];
+  };
+
+  console.log('AnalysisFeedback received analyses:', analyses);
+  
   return (
     <div className="w-full h-full p-4 bg-background rounded-lg shadow-lg border border-border">
       <h3 className="text-lg font-semibold mb-4 text-foreground">Code Analysis</h3>
@@ -32,7 +49,9 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({ currentFile,
           </div>
         )}
         {analyses.map((analysis, index) => {
-          const parsedAnalysis: CodeFeedback[] = JSON.parse(analysis.analysis)
+          const analysisArray = parseAnalysis(analysis.analysis);
+          console.log('Parsed analysis array:', analysisArray);
+          
           return (
             <div key={index} className="space-y-4 border-l-2 border-green-500 pl-4">
               <h4 className="text-sm font-medium text-foreground font-mono flex items-center gap-2">
@@ -40,7 +59,7 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({ currentFile,
                 {analysis.file}
               </h4>
               <div className="space-y-6">
-                {parsedAnalysis.map((item, itemIndex) => (
+                {analysisArray.map((item, itemIndex) => (
                   <div key={itemIndex} className="space-y-3 pl-4 border-l border-muted">
                     <div className="rounded-md overflow-hidden">
                       <SyntaxHighlighter

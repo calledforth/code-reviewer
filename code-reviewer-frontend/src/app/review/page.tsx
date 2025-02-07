@@ -70,6 +70,10 @@ export default function ReviewPage() {
             setActiveAnalysisFile(data.file);
             break;
           case 'analysis_complete':
+            console.log('Analysis complete data received:', {
+              file: data.file,
+              analysis: data.analysis
+            });
             setActiveAnalysisFile(undefined);
             setAnalyses(prev => [...prev, {
               file: data.file,

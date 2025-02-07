@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import os
+import json
 
 
 class CodeReviewer:
@@ -43,8 +44,13 @@ class CodeReviewer:
             response = chat_session.send_message(prompt)
             cleaned_response = self._clean_model_output(response.text)
 
-            return cleaned_response
+            # Parse the JSON string inside the 'analysis' key
+            analysis_data = json.loads(cleaned_response)
 
+            # Print the JSON in a readable format
+            print(json.dumps(analysis_data, indent=4))
+
+            return analysis_data
         except Exception as e:
             return f"AI review failed: {str(e)}"
 
