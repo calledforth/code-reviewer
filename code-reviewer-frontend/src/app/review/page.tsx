@@ -28,6 +28,8 @@ export default function ReviewPage() {
   const [isExtracting, setIsExtracting] = useState(true)
   const [activeAnalysisFile, setActiveAnalysisFile] = useState<string | undefined>()
   const [analyses, setAnalyses] = useState<any[]>([])
+  const [processedFiles, setProcessedFiles] = useState<string[]>([])
+  const [selectedFile, setSelectedFile] = useState<string | undefined>()
 
   useEffect(() => {
     if (initialInfoParam) {
@@ -67,7 +69,9 @@ export default function ReviewPage() {
           case 'error':
             throw new Error(data.message || 'An error occurred');
           case 'analysis_start':
-            setActiveAnalysisFile(data.file);
+            const fileName = data.file?.split('/').pop();
+            setActiveAnalysisFile(fileName);
+            setSelectedFile(fileName);
             break;
           case 'analysis_complete':
             console.log('Analysis complete data received:', {
@@ -75,6 +79,8 @@ export default function ReviewPage() {
               analysis: data.analysis
             });
             setActiveAnalysisFile(undefined);
+            // Store full path instead of just file name
+            setProcessedFiles(prev => [...prev, data.file?.split('/').pop() || '']);
             setAnalyses(prev => [...prev, {
               file: data.file,
               analysis: data.analysis
@@ -103,6 +109,10 @@ export default function ReviewPage() {
     };
   }, [repoUrl, token]);
 
+  const handleFileSelect = (fileName: string) => {
+    setSelectedFile(fileName);
+  };
+
   if (error) {
     return (
       <div className="min-h-screen p-4">
@@ -126,11 +136,15 @@ export default function ReviewPage() {
             data={contents} 
             isLoading={isExtracting}
             activeAnalysisFile={activeAnalysisFile}
+            processedFiles={processedFiles}
+            selectedFile={selectedFile}
+            onFileSelect={handleFileSelect}
           />
         </div>
         <AnalysisFeedback 
           currentFile={activeAnalysisFile}
           analyses={analyses}
+          selectedFile={selectedFile}
         />
       </div>
     </div>
