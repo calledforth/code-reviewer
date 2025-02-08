@@ -1,6 +1,3 @@
-# code-reviewer
-
-```markdown
 # Code Review Bot
 
 ## Description
