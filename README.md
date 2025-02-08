@@ -5,6 +5,9 @@ The **Code Review Bot** is an automated tool designed to streamline the code rev
 
 ---
 
+## Demo Video
+https://vimeo.com/manage/videos/1054811939/7e5d0483ec
+
 ## Features
 - Fetches Java files from GitHub repositories.
 - Analyzes code using static analysis tools and AI/ML for contextual feedback.
@@ -110,4 +113,3 @@ The **Code Review Bot** is an automated tool designed to streamline the code rev
 - [PMD](https://pmd.github.io/)
 - [OpenAI](https://openai.com/)
 - [PyGithub](https://pygithub.readthedocs.io/)
-```
