@@ -53,45 +53,49 @@ class CodeReviewer:
 
             # Meta Prompting
             feedback = None
+            code_review = ""
             if guidelines:
                 print("\nInitiating Code Review\n")
                 content = f"""
-                {Prompts.code_review}
+                {Prompts.code_review.value}
                 Code File: {file_info['name']}
                 Code Content: {file_info['content']}
                 Guidelines : {guidelines}
                 """
                 code_review = self.model.generate_content(contents=content)
+                print(code_review.text)
 
-                print("\nInitiating Feedback\n")
-                content = f"""
-                {Prompts.feedback}
-                code_review: {code_review}
-                filename: {file_info['name']}
-                code content: {file_info['content']}
-                Guidelines : {guidelines}
-                """
-                feedback = self.model.generate_content(contents=content)
+                # print("\nInitiating Feedback\n")
+                # content = f"""
+                # {Prompts.feedback.value}
+                # code_review: {code_review}
+                # filename: {file_info['name']}
+                # code content: {file_info['content']}
+                # Guidelines : {guidelines}
+                # """
+                # feedback = self.model.generate_content(contents=content)
+                # print(feedback)
 
             print("\nInitiating Checkstyle Summarization\n")
             content = f""" 
-            {Prompts.checkstyle_summarization}
+            {Prompts.checkstyle_summarization.value}
             checkstyle_results: {checkstyle_results}"""
 
             checkstyle_summarization = self.model.generate_content(contents=content)
+            print(checkstyle_summarization)
 
             print("\nInitiating Meta Prompting\n")
             content = f"""
-            {Prompts.Meta_prompt}
-            Feedback based on guidelines provided :
-            {feedback if feedback else 'No feedback provided'}
+            {Prompts.Meta_prompt.value}
+            code_review: {code_review}
             checkstyle_summarization: {checkstyle_summarization}
             filename: {file_info['name']}"""
 
             analysis_data = self.model.generate_content(contents=content)
             print("\nReview Completed\n")
+            print(analysis_data.text)
 
-            return analysis_data
+            return analysis_data.text
         except Exception as e:
             return f"AI review failed: {str(e)}"
 

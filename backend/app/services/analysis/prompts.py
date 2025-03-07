@@ -16,6 +16,7 @@ class Prompts(Enum):
     3. Rememeber to keep your explanation as comprehensive and intuitive as possible to help the developer understand the issue and how to resolve it.
 
     If no issues are found, state: "No issues detected based on the provided guidelines."
+    do not include any greetings and closing remarks, maintain a professional tone.
     """
 
     feedback = """
@@ -32,7 +33,7 @@ class Prompts(Enum):
     - **Solution**
     4. If the review is incorrect or incomplete, provide the correct review in the same format and complete the missing parts.
 
-    If no issues are found leave the review as it is.
+    If no issues are found, return without modifying.
     """
 
     checkstyle_summarization = """
@@ -47,18 +48,21 @@ class Prompts(Enum):
     4. If the text is already clear, leave it as it is
 
     Return the revised and improved text in the format provided.
+    Don't provide any greetings or closing remarks.
     """
 
     Meta_prompt = """
     You are an AI assistant, tasked with ensuring that a response is clear and legible. I will provide you with the output from a previous step (a code review or verification). Your task is to:
 
-    1. Evaluate the provided text for clarity, readability, and coherence.
+    1. Evaluate the provided text for clarity, readability, and coherence and make sure explanations are intuitive.
     2. Check if it:
     - Uses concise, plain language understandable to a developer with moderate experience.
     - Avoids ambiguity or overly technical jargon without explanation.
     - Follows a logical structure with clear sections (e.g., headings like **Problematic Code**, **Solution**).
     3. If the text is unclear or poorly formatted, rewrite it to improve readability while preserving all technical details.
     4. If the text is already clear, leave it as it is.
+    6. Do not include any greetings and closing remarks, maintain a professional tone.
 
     Return the revised and improved text in the format provided.
+    Properly distinguish between findings from checkstyle and guideline adherence feedback.
     """

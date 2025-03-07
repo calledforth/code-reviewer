@@ -27,7 +27,7 @@ export default function ReviewPage() {
   const [isCompleted, setIsCompleted] = useState(false)
   const [isExtracting, setIsExtracting] = useState(true)
   const [activeAnalysisFile, setActiveAnalysisFile] = useState<string | undefined>()
-  const [analyses, setAnalyses] = useState<any[]>([])
+  const [analyses, setAnalyses] = useState<string>('')
   const [processedFiles, setProcessedFiles] = useState<string[]>([])
   const [selectedFile, setSelectedFile] = useState<string | undefined>()
 
@@ -81,10 +81,7 @@ export default function ReviewPage() {
             setActiveAnalysisFile(undefined);
             // Store full path instead of just file name
             setProcessedFiles(prev => [...prev, data.file?.split('/').pop() || '']);
-            setAnalyses(prev => [...prev, {
-              file: data.file,
-              analysis: data.analysis
-            }]);
+            setAnalyses(data.analysis);
             break;
         }
       } catch (err) {

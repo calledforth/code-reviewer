@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, request, Response, stream_with_context
 import json
+import pdfplumber
+import io
 from app.services import GithubService
 
 bp = Blueprint("api", __name__)
@@ -21,9 +23,17 @@ def init_review():
             pdf_file = request.files["guidelines"]
             if pdf_file and pdf_file.filename.endswith(".pdf"):
                 try:
-                    guidelines = pdf_file.read()
-                    guidelines_cache[token] = guidelines
-                    print("\nGuidelines has been stored in cache\n")
+                    pdf_data = pdf_file.read()
+                    guidelines_text = ""
+
+                    with pdfplumber.open(io.BytesIO(pdf_data)) as pdf:
+                        for page in pdf.pages:
+                            guidelines_text += page.extract_text() or ""
+
+                    guidelines_cache[token] = guidelines_text
+                    print(
+                        f"\nGuidelines extracted ({len(guidelines_text)} chars) and stored in cache\n"
+                    )
 
                 except Exception as e:
                     print(f"Error reading PDF: {str(e)}")
@@ -85,7 +95,6 @@ def stream_review():
 
                     # Perform analysis
                     analysis = g.get_file_analysis(file_info)
-                    print(analysis)
 
                     # Send analysis results
                     yield f"""data: {json.dumps({
