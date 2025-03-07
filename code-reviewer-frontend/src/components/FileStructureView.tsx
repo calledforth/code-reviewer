@@ -29,7 +29,7 @@ export const FileStructureView: React.FC<FileStructureProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border">
+      <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border h-[calc(100vh-300px)]">
         <h3 className="text-lg font-semibold mb-4 text-foreground">File Analysis</h3>
         <div className="flex flex-col items-center justify-center py-8 space-y-4">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -53,9 +53,9 @@ export const FileStructureView: React.FC<FileStructureProps> = ({
   }
 
   return (
-    <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border">
+    <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border h-[calc(100vh-300px)] flex flex-col">
       <h3 className="text-lg font-semibold mb-4 text-foreground">File Analysis</h3>
-      <div className="max-h-[600px] overflow-y-auto relative">
+      <div className="overflow-y-auto flex-1 relative">
         <div className="space-y-2">
           {files.map((file, index) => {
             const fileName = file.path.split('/').pop() || file.name;

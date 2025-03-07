@@ -10,15 +10,13 @@ class CodeReviewer:
 
         # Create the model
         generation_config = {
-            "temperature": 1,
-            "top_p": 0.95,
+            "temperature": 0.3,
             "top_k": 40,
-            "max_output_tokens": 8192,
             "response_mime_type": "text/plain",
         }
 
         self.model = genai.GenerativeModel(
-            model_name="gemini-2.0-flash-exp",
+            model_name="gemini-2.0-flash",
             generation_config=generation_config,
         )
 
@@ -61,9 +59,13 @@ class CodeReviewer:
                 Code File: {file_info['name']}
                 Code Content: {file_info['content']}
                 Guidelines : {guidelines}
+                Keep your response as descriptive as possible, properly structure with various meticulously detailed sections and subsections explaining each and every detail of the code, solution and problem and why the problem is a problem and the solution is a solution.
+                To improve the readability of the response, make sure to use proper markdown formatting separating all sections of your response.
+                Your final analysis must not be in paragraph form, but in a structured format in points and subpoints with each of these followed by line breaks.
+                formatting rules, use only - for bullet points and -- for subpoints.
                 """
-                code_review = self.model.generate_content(contents=content)
-                print(code_review.text)
+                code_review = self.model.generate_content(contents=content).text
+                print(code_review)
 
                 # print("\nInitiating Feedback\n")
                 # content = f"""
@@ -81,21 +83,24 @@ class CodeReviewer:
             {Prompts.checkstyle_summarization.value}
             checkstyle_results: {checkstyle_results}"""
 
-            checkstyle_summarization = self.model.generate_content(contents=content)
+            checkstyle_summarization = self.model.generate_content(
+                contents=content
+            ).text
             print(checkstyle_summarization)
 
-            print("\nInitiating Meta Prompting\n")
-            content = f"""
-            {Prompts.Meta_prompt.value}
-            code_review: {code_review}
-            checkstyle_summarization: {checkstyle_summarization}
-            filename: {file_info['name']}"""
+            # print("\nInitiating Meta Prompting\n")
+            # content = f"""
+            # {Prompts.Meta_prompt.value}
+            # code_review: {code_review}
+            # checkstyle_summarization: {checkstyle_summarization}
+            # filename: {file_info['name']}"""
 
-            analysis_data = self.model.generate_content(contents=content)
+            # analysis_data = self.model.generate_content(contents=content)
+            analysis_data = checkstyle_summarization + code_review
             print("\nReview Completed\n")
-            print(analysis_data.text)
+            print(analysis_data)
 
-            return analysis_data.text
+            return analysis_data
         except Exception as e:
             return f"AI review failed: {str(e)}"
 

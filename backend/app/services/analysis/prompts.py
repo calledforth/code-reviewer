@@ -7,16 +7,15 @@ class Prompts(Enum):
 
     1. Review the code for adherence to the guidelines.
     2. Format your response as follows:
-    - **Proper Format**: State if the code follows proper formatting per the guidelines.
-    - **Problematic Code**: Quote the exact problematic code (if any) in a code block.
-    - **Guideline Number and Description**: Specify the guideline number and quote the full description from the PDF in *italics*.
-    - **Problem**: Describe the specific issue in the code.
-    - **Corrected Code**: Provide an example of how the code should look after correction.
-    - **Solution**: Suggest how to fix the issue.
+    - - Give a general overview and summary of the entire code file first
+      - Identify the problematic code if any, highlight the guideline number and description (in *italics*), which is being violated.
+      - Explain the problem in the code snippet with snippets of the problematic code.
+      - Provide the corrected code snippet.
+      - Explain the solution and how it resolves the issue.
     3. Rememeber to keep your explanation as comprehensive and intuitive as possible to help the developer understand the issue and how to resolve it.
 
     If no issues are found, state: "No issues detected based on the provided guidelines."
-    do not include any greetings and closing remarks, maintain a professional tone.
+    do not include any greetings and closing remarks, maintain a professional tone and remember to follow the format provided.
     """
 
     feedback = """
@@ -37,32 +36,33 @@ class Prompts(Enum):
     """
 
     checkstyle_summarization = """
-    You are an AI assistant tasked with meta-prompting to ensure a response is clear and legible. I will provide you with the output from a previous step (a code review or verification). Your task is to:
+    You are an AI assistant tasked with summarizing the results of a Checkstyle analysis. I will provide you with the output of a Checkstyle analysis. Your task is to:
 
-    1. Evaluate the provided text for clarity, readability, and coherence.
-    2. Check if it:
-    - Uses concise, plain language understandable to a developer with moderate experience.
-    - Avoids ambiguity or overly technical jargon without explanation.
-    - Follows a logical structure with clear sections (e.g., headings like **Problematic Code**, **Solution**).
-    3. If the text is unclear or poorly formatted, rewrite it to improve readability while preserving all technical details.
-    4. If the text is already clear, leave it as it is
+    1. Analyze the Checkstyle results and provide a summary of issues detected.
+    2. Categorize the issues based on severity (e.g., errors, warnings, suggestions).
+    3. For each detected issue, provide the following details:
+        - **Problematic Code**: The specific code snippet that has the issue.
+        - **Guideline Number and Description** (in *italics*): The relevant guideline that the code violates.
+        - **Suggested Correction**: A brief explanation of how to fix the issue.
 
-    Return the revised and improved text in the format provided.
-    Don't provide any greetings or closing remarks.
+    If no issues are found, state: "No issues detected by Checkstyle." 
+    do not include any greetings and closing remarks, maintain a professional tone and remember to follow the format provided.
+    Keep your response as descriptive as possible, properly structure with various meticulously detailed sections and subsections explaining each and every detail of the code, solution and problem and why the problem is a problem and the solution is a solution.
+
     """
 
-    Meta_prompt = """
-    You are an AI assistant, tasked with ensuring that a response is clear and legible. I will provide you with the output from a previous step (a code review or verification). Your task is to:
+    # Meta_prompt = """
+    # You are an AI assistant, tasked with ensuring that a response is clear and legible. I will provide you with the output from a previous step (a code review or verification). Your task is to:
 
-    1. Evaluate the provided text for clarity, readability, and coherence and make sure explanations are intuitive.
-    2. Check if it:
-    - Uses concise, plain language understandable to a developer with moderate experience.
-    - Avoids ambiguity or overly technical jargon without explanation.
-    - Follows a logical structure with clear sections (e.g., headings like **Problematic Code**, **Solution**).
-    3. If the text is unclear or poorly formatted, rewrite it to improve readability while preserving all technical details.
-    4. If the text is already clear, leave it as it is.
-    6. Do not include any greetings and closing remarks, maintain a professional tone.
+    # 1. Evaluate the provided text for clarity, readability, and coherence and make sure explanations are intuitive.
+    # 2. Check if it:
+    # - Uses concise, plain language understandable to a developer with moderate experience.
+    # - Avoids ambiguity or overly technical jargon without explanation.
+    # - Follows a logical structure with clear sections (e.g., headings like **Problematic Code**, **Solution**).
+    # 3. If the text is unclear or poorly formatted, rewrite it to improve readability while preserving all technical details.
+    # 4. If the text is already clear, leave it as it is.
+    # 6. Do not include any greetings and closing remarks, maintain a professional tone.
 
-    Return the revised and improved text in the format provided.
-    Properly distinguish between findings from checkstyle and guideline adherence feedback.
-    """
+    # Return the revised and improved text in the format provided.
+    # Properly distinguish between findings from checkstyle and guideline adherence feedback.
+    # """

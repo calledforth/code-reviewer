@@ -27,7 +27,7 @@ export default function ReviewPage() {
   const [isCompleted, setIsCompleted] = useState(false)
   const [isExtracting, setIsExtracting] = useState(true)
   const [activeAnalysisFile, setActiveAnalysisFile] = useState<string | undefined>()
-  const [analyses, setAnalyses] = useState<string>('')
+  const [analyses, setAnalyses] = useState<Record<string, string>>({})
   const [processedFiles, setProcessedFiles] = useState<string[]>([])
   const [selectedFile, setSelectedFile] = useState<string | undefined>()
 
@@ -79,9 +79,14 @@ export default function ReviewPage() {
               analysis: data.analysis
             });
             setActiveAnalysisFile(undefined);
+            const completedFileName = data.file?.split('/').pop() || '';
             // Store full path instead of just file name
-            setProcessedFiles(prev => [...prev, data.file?.split('/').pop() || '']);
-            setAnalyses(data.analysis);
+            setProcessedFiles(prev => [...prev, completedFileName]);
+            // Store analysis by filename in the analyses state
+            setAnalyses(prev => ({
+              ...prev,
+              [completedFileName]: data.analysis
+            }));
             break;
         }
       } catch (err) {
@@ -119,15 +124,17 @@ export default function ReviewPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6">
-      <h1 className="text-2xl font-bold mb-4">Code Review Results</h1>
-      {status && (
-        <div className={`text-sm ${isCompleted ? 'text-green-600 font-medium' : 'text-muted-foreground'}`}>
-          {status}
-        </div>
-      )}
-      <div className="grid grid-cols-[400px_1fr] gap-6">
-        <div className="space-y-6">
+    <div className="h-screen overflow-hidden p-4 flex flex-col">
+      <div className="flex-none">
+        <h1 className="text-2xl font-bold mb-4">Code Review Results</h1>
+        {status && (
+          <div className={`text-sm ${isCompleted ? 'text-green-600 font-medium' : 'text-muted-foreground'}`}>
+            {status}
+          </div>
+        )}
+      </div>
+      <div className="flex-1 overflow-hidden grid grid-cols-[400px_1fr] gap-6 mt-4">
+        <div className="space-y-6 overflow-y-auto pr-2">
           {initialInfo && <InfoPanel data={initialInfo} />}
           <FileStructureView 
             data={contents} 
@@ -138,11 +145,13 @@ export default function ReviewPage() {
             onFileSelect={handleFileSelect}
           />
         </div>
-        <AnalysisFeedback 
-          currentFile={activeAnalysisFile}
-          analyses={analyses}
-          selectedFile={selectedFile}
-        />
+        <div className="h-[calc(100vh-150px)]">
+          <AnalysisFeedback 
+            currentFile={activeAnalysisFile}
+            analyses={analyses}
+            selectedFile={selectedFile}
+          />
+        </div>
       </div>
     </div>
   );
