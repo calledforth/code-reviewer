@@ -4,6 +4,8 @@ from app.services import GithubService
 
 bp = Blueprint("api", __name__)
 
+guidelines_cache = {}
+
 
 @bp.route("/review/init", methods=["POST"])
 def init_review():
@@ -20,6 +22,9 @@ def init_review():
             if pdf_file and pdf_file.filename.endswith(".pdf"):
                 try:
                     guidelines = pdf_file.read()
+                    guidelines_cache[token] = guidelines
+                    print("\nGuidelines has been stored in cache\n")
+
                 except Exception as e:
                     print(f"Error reading PDF: {str(e)}")
 
@@ -58,7 +63,12 @@ def stream_review():
 
         def generate():
             try:
-                g = GithubService(token, github_url)
+                if token in guidelines_cache.keys():
+                    print("\nUsing cached guidelines\n")
+                    g = GithubService(token, github_url, guidelines_cache[token])
+                else:
+                    print("\nNo cached guidelines found\n")
+                    g = GithubService(token, github_url)
                 yield f"data: {json.dumps({'type': 'status', 'message': 'Starting review...'})}\n\n"
 
                 # First get and send all contents
