@@ -22,7 +22,7 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({
   const selectedAnalysisContent = selectedFile ? analyses[selectedFile] : undefined
 
   return (
-    <div className="w-full h-full p-4 bg-black text-white rounded border">
+    <div className="w-full h-full px-6 py-4 bg-neutral-950 text-white rounded border">
       <h3 className="text-lg font-medium mb-3">
         {selectedFile ? `Analysis: ${selectedFile}` : 'Code Analysis'}
       </h3>
@@ -50,13 +50,13 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({
                       language={match[1]}
                       PreTag="div"
                       wrapLongLines={true}
-                      customStyle={{ maxWidth: '100%' }}
+                      customStyle={{ maxWidth: '100%'}}
                       {...props}
                     >
                       {String(children).replace(/\n$/, '')}
                     </SyntaxHighlighter>
                   ) : (
-                    <code className="bg-gray-800 px-1 py-0.5 rounded text-white" {...props}>
+                    <code className="bg-neutral-800 px-1 py-0.5 rounded text-white" {...props}>
                       {children}
                     </code>
                   );

@@ -59,10 +59,7 @@ class CodeReviewer:
                 Code File: {file_info['name']}
                 Code Content: {file_info['content']}
                 Guidelines : {guidelines}
-                Keep your response as descriptive as possible, properly structure with various meticulously detailed sections and subsections explaining each and every detail of the code, solution and problem and why the problem is a problem and the solution is a solution.
-                To improve the readability of the response, make sure to use proper markdown formatting separating all sections of your response.
-                Your final analysis must not be in paragraph form, but in a structured format in points and subpoints with each of these followed by line breaks.
-                formatting rules, use only - for bullet points and -- for subpoints.
+                
                 """
                 code_review = self.model.generate_content(contents=content).text
                 print(code_review)

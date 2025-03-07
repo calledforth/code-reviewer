@@ -53,7 +53,7 @@ export const FileStructureView: React.FC<FileStructureProps> = ({
   }
 
   return (
-    <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border h-[calc(100vh-300px)] flex flex-col">
+    <div className="w-full p-4 bg-background rounded-lg shadow-lg border border-border flex flex-col">
       <h3 className="text-lg font-semibold mb-4 text-foreground">File Analysis</h3>
       <div className="overflow-y-auto flex-1 relative">
         <div className="space-y-2">
