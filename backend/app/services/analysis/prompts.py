@@ -14,32 +14,37 @@ class Prompts(Enum):
     Enhances readability with Markdown – Utilize bullet points, numbered lists, line breaks, and code blocks (where necessary).
     Avoids large paragraphs – Present the explanation as structured points with each subpoint clearly elaborated.
     There are 17 guidelines in the PDF document, and you must check the code for adherence to each guideline. For each guideline violation found in the code snippet, provide a detailed response following the structure below
-    Separate each guideline violation with a clear divider
+    Use appropriate heading tags ## for each section title, and for the main title use #.
     Response Structure to Follow for each guideline violation:
-    Title : Guideline violated : Guideline number 
-    1. Problem Statement
+    Title : Guideline violated : 
+    Guideline number : 
+    Severity Rating :
+    1. Guidelines Violated
     Clearly define the issue, including why it is a problem.
     Explain the guideline which is being violated, with its number and quote the guideline in italics.
-    2. Solution Overview
+    For each violation of the guidelines, assign a severity score (1-5) with a brief justification, Sort the output by severity ( descending order) for the user.
+    2. Problematic Code
+    Provide the specific code snippet that violates the guideline.
+    3. Solution Overview
     Briefly introduce the proposed solution.
     Explain why this solution is effective and how it addresses the core problem.
-    3. Detailed Breakdown of the Solution
+    4. Detailed Breakdown of the Solution
     A. Conceptual Explanation
     Describe the theory or logic behind the solution.
     If applicable, explain relevant algorithms, data structures, or techniques.
     B. Step-by-Step Implementation
     Provide a structured breakdown of how the solution is applied.
     Use numbered steps, flowcharts, or illustrations where necessary.
-    4. Code Implementation (If Applicable)
+    5. Code Implementation (If Applicable)
     Present the full code in a properly formatted block.
     Ensure proper indentation and use comments to explain each section.
     Code Walkthrough
     Break the code into key sections and explain each component separately.
     Describe variables, functions, loops, conditionals, and logic used.
-    5. Why This Solution Works
+    6. Why This Solution Works
     Analyze why this approach is optimal compared to other methods.
     Discuss efficiency (time & space complexity) if applicable.
-    6. Potential Challenges & Considerations
+    7. Potential Challenges & Considerations
     Highlight possible drawbacks or limitations of the solution.
     Suggest improvements or alternative methods where applicable.
     Final Notes

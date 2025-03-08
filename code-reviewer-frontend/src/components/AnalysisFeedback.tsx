@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import { vscDarkPlus,dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
 interface AnalysisFeedbackProps {
   currentFile?: string
@@ -22,8 +22,8 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({
   const selectedAnalysisContent = selectedFile ? analyses[selectedFile] : undefined
 
   return (
-    <div className="w-full h-full px-6 py-4 bg-neutral-950 text-white rounded border">
-      <h3 className="text-lg font-medium mb-3">
+    <div className="w-full h-full px-6 bg-neutral-950 text-white rounded border ">
+      <h3 className="text-lg font-medium mb-3 pt-2 italic">
         {selectedFile ? `Analysis: ${selectedFile}` : 'Code Analysis'}
       </h3>
       
@@ -46,7 +46,7 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({
                   const match = /language-(\w+)/.exec(className || '');
                   return !inline && match ? (
                     <SyntaxHighlighter
-                      style={vscDarkPlus}
+                      style={dracula}
                       language={match[1]}
                       PreTag="div"
                       wrapLongLines={true}
@@ -77,7 +77,7 @@ export const AnalysisFeedback: React.FC<AnalysisFeedbackProps> = ({
                   return <li className="text-gray-300">{children}</li>;
                 },
                 h1({children}) {
-                  return <h1 className="text-white text-2xl font-bold mt-6 mb-4">{children}</h1>;
+                  return <h1 className="text-white text-3xl font-bold mt-6 mb-4">{children}</h1>;
                 },
                 h2({children}) {
                   return <h2 className="text-white text-xl font-bold mt-5 mb-3">{children}</h2>;
